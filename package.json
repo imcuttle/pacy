@@ -1,0 +1,90 @@
+{
+  "name": "pacy",
+  "version": "1.0.0",
+  "description": "Smart dev pattern with webpack",
+  "author": "余聪 <yucong06@meituan.com>",
+  "scripts": {
+    "test": "npx jest",
+    "test:watch": "npm test -- --watch",
+    "preversion": "npm test",
+    "new": "npx edam",
+    "bootstrap": "npx lerna bootstrap",
+    "release": "npx lerna publish --conventional-commits -m 'chore(release): publish'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx lerna toc && git add README.md && pretty-quick --staged",
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+    }
+  },
+  "edam": {
+    "source": "pkg",
+    "alias": {
+      "pkg": {
+        "url": "./packages/__template",
+        "type": "file",
+        "config": {
+          "output": "./packages/"
+        }
+      }
+    }
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=10"
+  },
+  "files": [
+    "es",
+    "types",
+    "lib"
+  ],
+  "keywords": [
+    "余聪",
+    "pacy",
+    "pacy"
+  ],
+  "main": "lib",
+  "types": "types",
+  "license": "MIT",
+  "repository": "余聪/pacy",
+  "module": "es",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "testMatch": [
+      "**/__test{s,}__/*.(spec|test).{t,j}s{x,}"
+    ]
+  },
+  "packagePrefix": "@pacy/",
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@types/jest": "^26.0.19",
+    "edam-cli": "^3.3.11",
+    "husky": "^4.3.6",
+    "jest": "^26.6.3",
+    "lerna-cli": "^3.0.0",
+    "lerna-command-toc": "^1.0.1",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.1.3"
+  }
+}

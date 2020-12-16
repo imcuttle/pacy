@@ -1,0 +1,43 @@
+{
+  "name": "@pacy/webpack-config",
+  "version": "0.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "余聪 <yucong06@meituan.com>",
+  "description": "webpack config",
+  "main": "lib",
+  "types": "types",
+  "module": "es",
+  "files": [
+    "lib",
+    "es",
+    "types"
+  ],
+  "scripts": {
+    "test": "../../scripts/run test",
+    "build": "../../scripts/run build",
+    "packlimit": "../../scripts/run packlimit",
+    "dev": "npm run build -- --watch",
+    "prepublishOnly": "npm run build && npm run packlimit",
+    "version": "npm test && npm run packlimit"
+  },
+  "keywords": [
+    "余聪",
+    "webpack-config",
+    "余聪",
+    "pacy",
+    "pacy"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+undefined",
+    "directory": "packages/webpack-config"
+  },
+  "devDependencies": {
+    "webpack": "^5.10.3"
+  },
+  "dependencies": {
+    "webpack-chain": "^6.5.1"
+  }
+}
