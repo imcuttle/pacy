@@ -15,15 +15,9 @@ import {
   AsyncSeriesWaterfallHook
 } from 'tapable'
 import { cosmiconfig } from 'cosmiconfig'
+import { PacyCoreConfig } from './utils/checkConfig'
 
 export const rcExplorer = cosmiconfig('pacy')
-
-export type PacyCoreConfig = {
-  // 是否自动读取配置文件
-  pacyrc?: boolean
-  cwd?: string
-  // autoRoute
-}
 
 class PacyCore {
   public hooks = {
