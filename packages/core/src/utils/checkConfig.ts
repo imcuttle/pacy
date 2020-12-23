@@ -1,9 +1,13 @@
 import ow from 'ow'
+import PacyCore from '@pacy/core'
 
+export type TPacyPlugin = ((pacy: PacyCore) => void) | string | [string, any]
 export type PacyCoreConfig = {
   // 是否自动读取配置文件
   pacyrc?: boolean
   baseDir?: string
+
+  plugins?: TPacyPlugin[]
 
   includes?:
     | string
@@ -21,6 +25,13 @@ export default function checkConfig(config: PacyCoreConfig) {
     config,
     'pacy config',
     ow.object.exactShape({
+      plugins: ow.optional.array.ofType(
+        ow.any(
+          ow.string,
+          ow.array.is((array) => typeof array[0] === 'string'),
+          ow.function
+        )
+      ),
       pacyrc: ow.optional.boolean,
       baseDir: ow.optional.string,
       includes: ow.optional.any(

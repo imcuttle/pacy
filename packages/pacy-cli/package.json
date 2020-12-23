@@ -1,5 +1,5 @@
 {
-  "name": "pack-cli",
+  "name": "pacy-cli",
   "version": "0.0.0",
   "publishConfig": {
     "access": "public"
@@ -22,10 +22,13 @@
     "prepublishOnly": "npm run build && npm run packlimit",
     "version": "npm test && npm run packlimit"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@pacy/cli": "^0.0.0",
+    "@pacy/core": "^0.0.0"
+  },
   "keywords": [
     "余聪",
-    "pack-cli",
+    "pacy-cli",
     "余聪",
     "pacy",
     "pacy"
@@ -33,6 +36,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/imcuttle/pacy.git",
-    "directory": "packages/pack-cli"
+    "directory": "packages/pacy-cli"
   }
 }

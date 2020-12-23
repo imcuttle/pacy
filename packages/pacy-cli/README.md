@@ -1,7 +1,7 @@
-# pack-cli
+# pacy-cli
 
-[![NPM version](https://img.shields.io/npm/v/pack-cli.svg?style=flat-square)](https://www.npmjs.com/package/pack-cli)
-[![NPM Downloads](https://img.shields.io/npm/dm/pack-cli.svg?style=flat-square&maxAge=43200)](https://www.npmjs.com/package/pack-cli)
+[![NPM version](https://img.shields.io/npm/v/pacy-cli.svg?style=flat-square)](https://www.npmjs.com/package/pacy-cli)
+[![NPM Downloads](https://img.shields.io/npm/dm/pacy-cli.svg?style=flat-square&maxAge=43200)](https://www.npmjs.com/package/pacy-cli)
 [![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://prettier.io/)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat-square)](https://conventionalcommits.org)
 
@@ -10,15 +10,15 @@
 ## Installation
 
 ```bash
-npm install pack-cli
+npm install pacy-cli
 # or use yarn
-yarn add pack-cli
+yarn add pacy-cli
 ```
 
 ## Usage
 
 ```javascript
-import packCli from 'pack-cli'
+import pacyCli from 'pacy-cli'
 ```
 
 ## Contributing

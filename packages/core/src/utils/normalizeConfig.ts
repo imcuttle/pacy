@@ -24,7 +24,27 @@ export default function normalizeConfig(config: PacyCoreConfig, baseDir?: string
     )
   )
 
+  const resolvePath = (name) => {
+    if (name.startsWith('.') && baseDir) {
+      return nps.resolve(baseDir, name)
+    }
+    return name
+  }
+
   checkConfig(config)
+
+  if (config.plugins) {
+    config.plugins = config.plugins.map((plg) => {
+      if (typeof plg === 'string') {
+        return resolvePath(plg)
+      }
+      if (Array.isArray(plg)) {
+        plg[0] = resolvePath(plg[0])
+        return plg
+      }
+      return plg
+    })
+  }
 
   if (config.includes) {
     if (isPlainObj(config.includes)) {

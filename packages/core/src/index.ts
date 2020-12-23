@@ -17,9 +17,11 @@ import {
 import { cosmiconfig } from 'cosmiconfig'
 import defineSymbolic from 'symbolic-link'
 
-import { PacyCoreConfig } from './utils/checkConfig'
+import { PacyCoreConfig, TPacyPlugin } from './utils/checkConfig'
 import normalizeConfig, { NormalizedPacyCoreConfig } from './utils/normalizeConfig'
 import CompileRunner from './compile-runner'
+
+export * from './utils/checkConfig'
 
 export const rcExplorer = cosmiconfig('pacy')
 
@@ -30,8 +32,9 @@ class PacyCore {
   }
 
   public compileRunner: CompileRunner = new CompileRunner()
-  private _config: NormalizedPacyCoreConfig
+  // private _plugins: PacyPlugin[]
 
+  private _config: NormalizedPacyCoreConfig
   public config: NormalizedPacyCoreConfig = {}
 
   constructor(config: PacyCoreConfig = {}) {
@@ -41,6 +44,23 @@ class PacyCore {
       },
       normalizeConfig(config)
     )
+  }
+
+  runPlugin(plugin?: TPacyPlugin) {
+    if (!plugin) {
+      return
+    }
+    if (typeof plugin === 'string') {
+      require(plugin)()(this)
+    } else if (Array.isArray(plugin)) {
+      require(plugin[0])(plugin[1])(this)
+    } else if (typeof plugin === 'function') {
+      plugin(this)
+    }
+  }
+
+  runPlugins(plugins: TPacyPlugin[] = []) {
+    plugins.forEach((plg) => this.runPlugin(plg))
   }
 
   async loadRcConfig(cwd = this._config.baseDir) {
@@ -56,13 +76,17 @@ class PacyCore {
   async getConfig() {
     if (this._config.pacyrc) {
       const rcConfig = await this.loadRcConfig()
-      return this.hooks.getConfig.promise(Object.assign({}, this._config, rcConfig))
+      this.runPlugins(rcConfig.plugins)
+      return Object.assign({}, rcConfig, this._config)
     }
-    return this.hooks.getConfig.promise({ ...this._config })
+    return { ...this._config }
   }
 
   async getCompileRunner() {
-    this.config = await this.getConfig()
+    const config = await this.getConfig()
+    this.runPlugins(config.plugins)
+
+    this.config = await this.hooks.getConfig.promise(config)
     defineSymbolic(this.compileRunner, {
       config: [this, 'config']
     })
