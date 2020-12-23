@@ -7,7 +7,11 @@
     "declaration": false,
     "moduleResolution": "node",
     "outDir": "types",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@pacy/*": ["packages/*/src"]
+    }
   },
   "include": ["./src"],
   "exclude": ["node_modules", "test", "__tests__"]

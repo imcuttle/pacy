@@ -15,40 +15,60 @@ import {
   AsyncSeriesWaterfallHook
 } from 'tapable'
 import { cosmiconfig } from 'cosmiconfig'
+import defineSymbolic from 'symbolic-link'
+
 import { PacyCoreConfig } from './utils/checkConfig'
+import normalizeConfig, { NormalizedPacyCoreConfig } from './utils/normalizeConfig'
+import CompileRunner from './compile-runner'
 
 export const rcExplorer = cosmiconfig('pacy')
 
 class PacyCore {
   public hooks = {
-    accelerate: new SyncHook(['newSpeed']),
-    brake: new SyncHook(),
-    // @ts-ignore
-    calculateRoutes: new AsyncParallelHook(['source', 'target', 'routesList'])
+    getConfig: new AsyncSeriesWaterfallHook(['config']),
+    compileRunner: new AsyncSeriesBailHook(['compileRunner'])
   }
-  constructor(public config: PacyCoreConfig = {}) {
-    this.config = Object.assign(
+
+  public compileRunner: CompileRunner = new CompileRunner()
+  private _config: NormalizedPacyCoreConfig
+
+  public config: NormalizedPacyCoreConfig = {}
+
+  constructor(config: PacyCoreConfig = {}) {
+    this._config = Object.assign(
       {
-        cwd: process.cwd()
+        baseDir: process.cwd()
       },
-      config
+      normalizeConfig(config)
     )
   }
 
-  async loadRcConfig(cwd = this.config.cwd) {
+  async loadRcConfig(cwd = this._config.baseDir) {
     const result = await rcExplorer.search(cwd)
     if (!result) {
       return
     }
     const { config, filepath, isEmpty } = result
     const baseDir = nps.dirname(filepath)
-
-    return config
+    return normalizeConfig(config, baseDir)
   }
 
-  async run() {
-    const rcConfig = await this.loadRcConfig()
-    console.log(rcConfig)
+  async getConfig() {
+    if (this._config.pacyrc) {
+      const rcConfig = await this.loadRcConfig()
+      return this.hooks.getConfig.promise(Object.assign({}, this._config, rcConfig))
+    }
+    return this.hooks.getConfig.promise({ ...this._config })
+  }
+
+  async getCompileRunner() {
+    this.config = await this.getConfig()
+    defineSymbolic(this.compileRunner, {
+      config: [this, 'config']
+    })
+    await this.hooks.compileRunner.promise(this.compileRunner)
+
+    return this.compileRunner
   }
 }
 

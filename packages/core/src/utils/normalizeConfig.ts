@@ -12,7 +12,7 @@ export type NormalizedPacyCoreConfig = PacyCoreConfig & {
   }
 }
 
-export default function normalizeConfig(config: PacyCoreConfig, baseDir: string): NormalizedPacyCoreConfig {
+export default function normalizeConfig(config: PacyCoreConfig, baseDir?: string): NormalizedPacyCoreConfig {
   config = cloneDeep(
     Object.assign(
       {
@@ -37,11 +37,16 @@ export default function normalizeConfig(config: PacyCoreConfig, baseDir: string)
       }
     }
 
-    Object.keys(config.includes).forEach((name) => {
-      config.includes[name] = toArray(config.includes[name]).map((name) => {
-        return nps.resolve(baseDir, name)
+    Object.keys(config.includes)
+      .concat(Object.getOwnPropertySymbols(config.includes) as any[])
+      .forEach((name) => {
+        config.includes[name] = toArray(config.includes[name]).map((name) => {
+          if (baseDir) {
+            return nps.resolve(baseDir, name)
+          }
+          return name
+        })
       })
-    })
   }
 
   return config as NormalizedPacyCoreConfig

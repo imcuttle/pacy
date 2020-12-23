@@ -1,4 +1,7 @@
 module.exports = {
+  ...require('../../jest.config'),
   name: require('./package.json').name,
-  ...require('../../jest.confg')
+  displayName: require('./package').name,
+  testMatch: [`${__dirname}/__tests__/**/*.{spec,test}.ts{x,}`],
+  rootDir: '../..'
 }

@@ -1,11 +1,11 @@
 {
-  "name": "@pacy/core",
+  "name": "pack-cli",
   "version": "0.0.0",
   "publishConfig": {
     "access": "public"
   },
   "author": "余聪 <yucong06@meituan.com>",
-  "description": "core",
+  "description": "cli use",
   "main": "lib",
   "types": "types",
   "module": "es",
@@ -22,20 +22,10 @@
     "prepublishOnly": "npm run build && npm run packlimit",
     "version": "npm test && npm run packlimit"
   },
-  "dependencies": {
-    "@pacy/webpack-config": "^0.0.0",
-    "cosmiconfig": "^7.0.0",
-    "globby": "^11.0.1",
-    "is-plain-obj": "^3.0.0",
-    "lodash": "^4.17.20",
-    "lodash.clonedeep": "^4.5.0",
-    "ow": "^0.20.0",
-    "symbolic-link": "^1.0.1",
-    "tapable": "^2.2.0"
-  },
+  "dependencies": {},
   "keywords": [
     "余聪",
-    "core",
+    "pack-cli",
     "余聪",
     "pacy",
     "pacy"
@@ -43,6 +33,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/imcuttle/pacy.git",
-    "directory": "packages/core"
+    "directory": "packages/pack-cli"
   }
 }

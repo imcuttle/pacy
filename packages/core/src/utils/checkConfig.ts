@@ -3,8 +3,7 @@ import ow from 'ow'
 export type PacyCoreConfig = {
   // 是否自动读取配置文件
   pacyrc?: boolean
-  cwd?: string
-  // autoRoute
+  baseDir?: string
 
   includes?:
     | string
@@ -12,6 +11,9 @@ export type PacyCoreConfig = {
     | {
         [key: string]: string[] | string
       }
+  // autoRoute
+
+  isDev?: boolean
 }
 
 export default function checkConfig(config: PacyCoreConfig) {
@@ -20,7 +22,7 @@ export default function checkConfig(config: PacyCoreConfig) {
     'pacy config',
     ow.object.exactShape({
       pacyrc: ow.optional.boolean,
-      cwd: ow.optional.string,
+      baseDir: ow.optional.string,
       includes: ow.optional.any(
         ow.string,
         ow.array.ofType(ow.string),
