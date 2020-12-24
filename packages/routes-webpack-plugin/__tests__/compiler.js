@@ -28,9 +28,10 @@ module.exports = (fixture, options) => {
           console.log(data, asset)
           return {
             source: {
-              source: () => 'abc'
-            },
-            info: 'info'
+              source: () => 'module.exports = "abc";',
+              size: () => 'module.exports = "abc";'.length
+            }
+            // info: 'info'
           }
         }
       })
