@@ -17,9 +17,18 @@ import {
 import { cosmiconfig } from 'cosmiconfig'
 import { defineSymbolic } from 'symbolic-link'
 
+import defaultPlugin from './plugins'
 import { PacyCoreConfig, TPacyPlugin } from './utils/checkConfig'
 import normalizeConfig, { NormalizedPacyCoreConfig } from './utils/normalizeConfig'
 import CompileRunner from './compile-runner'
+
+const requireModule = (id) => {
+  let mod = require(id)
+  if (mod.__esModule) {
+    return mod.default
+  }
+  return mod
+}
 
 export * from './utils/checkConfig'
 
@@ -44,23 +53,28 @@ class PacyCore {
       },
       normalizeConfig(config)
     )
+
+    this.applyPlugin(defaultPlugin())
   }
 
-  runPlugin(plugin?: TPacyPlugin) {
+  applyPlugin(plugin?: TPacyPlugin) {
     if (!plugin) {
       return
     }
     if (typeof plugin === 'string') {
-      require(plugin)()(this)
+      requireModule(plugin)()(this)
     } else if (Array.isArray(plugin)) {
-      require(plugin[0])(plugin[1])(this)
+      requireModule(plugin[0])(plugin[1])(this)
     } else if (typeof plugin === 'function') {
       plugin(this)
     }
   }
 
-  runPlugins(plugins: TPacyPlugin[] = []) {
-    plugins.forEach((plg) => this.runPlugin(plg))
+  applyPlugins(plugins: TPacyPlugin[] = []) {
+    if (!plugins) {
+      return
+    }
+    plugins.forEach((plg) => this.applyPlugin(plg))
   }
 
   async loadRcConfig(cwd = this._config.baseDir) {
@@ -76,7 +90,7 @@ class PacyCore {
   async getConfig() {
     if (this._config.pacyrc) {
       const rcConfig = await this.loadRcConfig()
-      this.runPlugins(rcConfig.plugins)
+      this.applyPlugins(rcConfig.plugins)
       return Object.assign({}, rcConfig, this._config)
     }
     return { ...this._config }
@@ -84,7 +98,7 @@ class PacyCore {
 
   async getCompileRunner() {
     const config = await this.getConfig()
-    this.runPlugins(config.plugins)
+    this.applyPlugins(config.plugins)
 
     this.config = await this.hooks.getConfig.promise(config)
     defineSymbolic(this.compileRunner, {

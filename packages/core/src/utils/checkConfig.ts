@@ -9,12 +9,12 @@ export type PacyCoreConfig = {
 
   plugins?: TPacyPlugin[]
 
-  includes?:
-    | string
-    | string[]
-    | {
-        [key: string]: string[] | string
-      }
+  // includes?:
+  //   | string
+  //   | string[]
+  //   | {
+  //       [key: string]: string[] | string
+  //     }
   // autoRoute
 
   isDev?: boolean
