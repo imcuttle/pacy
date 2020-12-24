@@ -29,7 +29,7 @@ export default class HotEmitPlugin {
     const oldAsset = compilation.assets[this.inputFilename]
     const { source, info } = await this.options.onAsset(oldAsset)
 
-    console.log({ source, info })
+    console.log({ source, info }, oldAsset, Object.keys(compilation.assets))
     if (oldAsset) {
       return compilation.updateAsset(this.inputFilename, source, info)
     }
@@ -44,10 +44,11 @@ export default class HotEmitPlugin {
       this.options.onWatchClose && this.options.onWatchClose(compiler, this)
     })
 
-    // Executed right before emitting assets to output dir.
-    compiler.hooks.afterEmit.tapPromise(NAME, async (compilation) => {
+    compiler.hooks.compilation.tap(NAME, (compilation) => {
       this.compilation = compilation
-      return this.emitAsset()
+      compilation.hooks.processAssets.tapPromise(NAME, async (compilation) => {
+        return this.emitAsset()
+      })
     })
   }
 }
