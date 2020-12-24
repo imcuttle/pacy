@@ -1,5 +1,5 @@
 import ow from 'ow'
-import PacyCore from '@pacy/core'
+import PacyCore from '../'
 
 export type TPacyPlugin = ((pacy: PacyCore) => void) | string | [string, any]
 export type PacyCoreConfig = {
@@ -23,8 +23,9 @@ export type PacyCoreConfig = {
 export default function checkConfig(config: PacyCoreConfig) {
   return ow(
     config,
-    'pacy config',
+    'PacyConfig',
     ow.object.exactShape({
+      isDev: ow.optional.boolean,
       plugins: ow.optional.array.ofType(
         ow.any(
           ow.string,

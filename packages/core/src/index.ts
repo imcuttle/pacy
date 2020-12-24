@@ -15,7 +15,7 @@ import {
   AsyncSeriesWaterfallHook
 } from 'tapable'
 import { cosmiconfig } from 'cosmiconfig'
-import defineSymbolic from 'symbolic-link'
+import { defineSymbolic } from 'symbolic-link'
 
 import { PacyCoreConfig, TPacyPlugin } from './utils/checkConfig'
 import normalizeConfig, { NormalizedPacyCoreConfig } from './utils/normalizeConfig'

@@ -4,10 +4,9 @@
  */
 
 import cli from '@pacy/cli'
-import PacyCore from '@pacy/core'
 import { PacyCoreConfig, rcExplorer } from '@pacy/core'
 
-// const addCmd = require('@lerna/add/command')
+const startCmd = require('@pacy/start/command')
 // const bootstrapCmd = require('@lerna/bootstrap/command')
 // const changedCmd = require('@lerna/changed/command')
 // const cleanCmd = require('@lerna/clean/command')
@@ -46,7 +45,7 @@ export default async function pacyCli(argv) {
     commands = config.extendCommands || []
   }
 
-  let cliInstance = cli()
+  let cliInstance = cli().command(startCmd)
 
   commands.forEach((cmd) => {
     // relative path
