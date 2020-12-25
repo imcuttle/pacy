@@ -21,10 +21,21 @@ const evalCode = (stats: any, filename = 'bundle.js') => {
 }
 
 describe('routesWebpackPlugin', function () {
-  it('spec case', async function () {
+  it('build case', async function () {
     const stats = await compile('a.js')
     const x = evalCode(stats)
     console.log(x, stats.toJson())
     // console.log(output)
+  })
+
+  it('dev watch case', function (done) {
+    jest.setTimeout(1000000)
+    compile('a.js', {
+      watch: true,
+      callback: (error, stats) => {
+        const x = evalCode(stats)
+        console.log(x)
+      }
+    })
   })
 })

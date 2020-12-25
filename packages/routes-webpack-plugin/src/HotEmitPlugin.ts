@@ -1,17 +1,17 @@
+import { promisify } from 'util'
 const NAME = 'HotEmitPlugin'
 
 type SyncOrAsync<T> = T | Promise<T>
 
-export type Asset = { source?: any; info?: any }
-
 export type HotEmitPluginOptions = {
-  onAsset: (oldAsset?: Asset) => SyncOrAsync<Asset>
+  onModule: (oldAsset?: any) => SyncOrAsync<any>
   onWatchRun?: (compiler: any, pluginApi: HotEmitPlugin) => SyncOrAsync<void>
   onWatchClose?: (compiler: any, pluginApi: HotEmitPlugin) => void
 }
 
 export default class HotEmitPlugin {
-  private compilation: null
+  public compilation: any
+  public compiler: any
 
   constructor(public inputFilename: string, public options: HotEmitPluginOptions) {
     this.options = options
@@ -20,23 +20,34 @@ export default class HotEmitPlugin {
     this.compilation = null
   }
 
-  async emitAsset() {
-    if (!this.compilation || !this.options.onAsset) {
+  async emitModule() {
+    if (!this.compilation || !this.options.onModule) {
       return
     }
     const compilation = this.compilation as any
-    // console.log(compilation.assets)
-    const oldAsset = compilation.assets[this.inputFilename]
-    const { source, info } = await this.options.onAsset(oldAsset)
 
-    console.log({ source, info }, oldAsset, Object.keys(compilation.assets))
-    if (oldAsset) {
-      return compilation.updateAsset(this.inputFilename, source, info)
+    let oldModule
+    for (const mod of compilation.modules) {
+      if (mod.resource === this.inputFilename) {
+        oldModule = mod
+        break
+      }
     }
-    return compilation.emitAsset(this.inputFilename, source, info)
+
+    const newModule = await this.options.onModule(oldModule)
+    if (!newModule) {
+      return
+    }
+
+    if (oldModule) {
+      // compilation.buildModule()
+      return promisify(compilation.rebuildModule.bind(compilation))(newModule)
+    }
+    return compilation.addModule(newModule)
   }
 
   apply(compiler) {
+    this.compiler = compiler
     compiler.hooks.watchRun.tapPromise(NAME, async (compiler) => {
       this.options.onWatchRun && (await this.options.onWatchRun(compiler, this))
     })
@@ -44,10 +55,12 @@ export default class HotEmitPlugin {
       this.options.onWatchClose && this.options.onWatchClose(compiler, this)
     })
 
-    compiler.hooks.compilation.tap(NAME, (compilation) => {
-      this.compilation = compilation
-      compilation.hooks.processAssets.tapPromise(NAME, async (compilation) => {
-        return this.emitAsset()
+    compiler.hooks.thisCompilation.tap(NAME, (compilation) => {
+      compilation.hooks.buildModule.tap(NAME, async (module) => {
+        if (module.resource === this.inputFilename) {
+          this.compilation = compilation
+          await this.emitModule()
+        }
       })
     })
   }

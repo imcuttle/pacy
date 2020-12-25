@@ -1,12 +1,13 @@
 const path = require('path')
 const webpack = require('webpack')
-const RoutesWebpackPlugin = require('../src').default
+const RoutesWebpackPlugin = require('../' + (process.env.NODE_ENV === 'test' ? 'src' : 'lib')).default
 const Memoryfs = require('memory-fs')
+// const { RawSource } = require('webpack-sources')
 
 const h = require('./helper')
 
-module.exports = (fixture, options) => {
-  const compiler = webpack({
+module.exports = (fixture, options = {}) => {
+  const config = {
     context: __dirname,
     entry: `./fixture/${fixture}`,
     output: {
@@ -14,30 +15,31 @@ module.exports = (fixture, options) => {
       filename: 'bundle.js'
     },
     mode: 'development',
-    module: {},
+    module: {
+      rules: []
+    },
     resolve: {},
     plugins: [
       new RoutesWebpackPlugin({
         inputFilename: h.fixture('_routesPlaceholder.js'),
-        dirPatterns: [h.fixture('pages')],
+        dirPatterns: ['fixture/pages'],
         watchPatterns: [h.fixture('pages')],
         globbyOptions: {
           absolute: false
-        },
-        onAsset: (data, asset) => {
-          console.log(data, asset)
-          return {
-            source: {
-              source: () => 'module.exports = "abc";',
-              size: () => 'module.exports = "abc";'.length
-            }
-            // info: 'info'
-          }
         }
       })
     ]
-  })
+  }
+
+  if (options.returnConfig) {
+    return config
+  }
+  const compiler = webpack(config)
   compiler.outputFileSystem = new Memoryfs()
+
+  if (options.watch) {
+    return compiler.watch({}, options.callback)
+  }
 
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
