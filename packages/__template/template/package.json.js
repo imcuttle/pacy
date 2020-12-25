@@ -6,8 +6,8 @@ module.exports = ({ packagePrefix, name, description, scriptBin, _, useTs }) => 
     build: `${scriptBin}/run build`,
     packlimit: `${scriptBin}/run packlimit`,
     dev: `npm run build -- --watch`,
-    prepublishOnly: `npm run build && npm run packlimit`,
-    version: `npm test && npm run packlimit`
+    prepublishOnly: `npm run build`,
+    version: `npm test`
   }
 
   const pkg = {

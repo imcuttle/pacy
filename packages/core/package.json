@@ -1,6 +1,6 @@
 {
   "name": "@pacy/core",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "publishConfig": {
     "access": "public"
   },
@@ -19,11 +19,11 @@
     "build": "../../scripts/run build",
     "packlimit": "../../scripts/run packlimit",
     "dev": "npm run build -- --watch",
-    "prepublishOnly": "npm run build && npm run packlimit",
-    "version": "npm test && npm run packlimit"
+    "prepublishOnly": "npm run build",
+    "version": "npm test"
   },
   "dependencies": {
-    "@pacy/webpack-config": "^0.0.0",
+    "@pacy/webpack-config": "^0.0.1",
     "cosmiconfig": "^7.0.0",
     "globby": "^11.0.1",
     "is-plain-obj": "^3.0.0",

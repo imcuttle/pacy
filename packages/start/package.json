@@ -20,8 +20,8 @@
     "build": "../../scripts/run build",
     "packlimit": "../../scripts/run packlimit",
     "dev": "npm run build -- --watch",
-    "prepublishOnly": "npm run build && npm run packlimit",
-    "version": "npm test && npm run packlimit"
+    "prepublishOnly": "npm run build",
+    "version": "npm test"
   },
   "dependencies": {
     "@pacy/core": "^0.0.0"

@@ -1,6 +1,6 @@
 {
   "name": "@pacy/routes-webpack-plugin",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "publishConfig": {
     "access": "public"
   },
@@ -19,8 +19,8 @@
     "build": "../../scripts/run build",
     "packlimit": "../../scripts/run packlimit",
     "dev": "npm run build -- --watch",
-    "prepublishOnly": "npm run build && npm run packlimit",
-    "version": "npm test && npm run packlimit",
+    "prepublishOnly": "npm run build",
+    "version": "npm test",
     "example": "npx webpack serve"
   },
   "dependencies": {
