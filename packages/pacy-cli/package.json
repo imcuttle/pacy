@@ -1,6 +1,6 @@
 {
   "name": "pacy-cli",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "publishConfig": {
     "access": "public"
   },
@@ -25,7 +25,7 @@
   "dependencies": {
     "@pacy/cli": "^0.0.0",
     "@pacy/core": "^0.0.0",
-    "@pacy/start": "^0.0.0"
+    "@pacy/start": "^0.0.2"
   },
   "keywords": [
     "余聪",

@@ -5,8 +5,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 0.0.2 (2020-12-25)
 
-**Note:** Version bump only for package @pacy/cli
-
-## 0.0.1 (2020-12-25)
-
-**Note:** Version bump only for package @pacy/cli
+**Note:** Version bump only for package pacy

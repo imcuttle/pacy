@@ -1,6 +1,6 @@
 {
   "name": "@pacy/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,7 +23,7 @@
     "version": "npm test"
   },
   "dependencies": {
-    "@pacy/webpack-config": "^0.0.1",
+    "@pacy/webpack-config": "^0.0.2",
     "cosmiconfig": "^7.0.0",
     "globby": "^11.0.1",
     "is-plain-obj": "^3.0.0",
