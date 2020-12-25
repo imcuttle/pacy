@@ -28,7 +28,7 @@ describe('routesWebpackPlugin', function () {
     // console.log(output)
   })
 
-  it('dev watch case', function (done) {
+  it.skip('dev watch case', function (done) {
     jest.setTimeout(1000000)
     compile('a.js', {
       watch: true,
