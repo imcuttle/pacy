@@ -22,7 +22,7 @@ const evalCode = (stats: any, filename = 'bundle.js') => {
 
 describe('routesWebpackPlugin', function () {
   it('build case', async function () {
-    const stats = await compile('a.js')
+    const stats = await compile('default.js')
     const x = evalCode(stats)
     console.log(x, stats.toJson())
     // console.log(output)
