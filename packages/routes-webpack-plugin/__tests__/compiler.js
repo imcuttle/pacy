@@ -16,17 +16,24 @@ module.exports = (fixture, options = {}) => {
     },
     mode: 'development',
     module: {
-      rules: []
+      rules: [
+        {
+          // test: /\.js$/,
+          // loader: [
+          //   // 'raw'
+          // ]
+        }
+      ]
     },
+    devtool: 'source-map',
     resolve: {},
     plugins: [
       new RoutesWebpackPlugin({
         inputFilename: h.fixture('_routesPlaceholder.js'),
         dirPatterns: ['fixture/pages'],
         watchPatterns: [h.fixture('pages')],
-        globbyOptions: {
-          absolute: false
-        }
+        toSourceString: options.toSourceString,
+        globbyOptions: {}
       })
     ]
   }

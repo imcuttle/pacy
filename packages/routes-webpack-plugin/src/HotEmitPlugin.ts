@@ -1,5 +1,6 @@
 import { promisify } from 'util'
 const NAME = 'HotEmitPlugin'
+import * as fs from 'fs-extra'
 
 type SyncOrAsync<T> = T | Promise<T>
 
@@ -12,6 +13,7 @@ export type HotEmitPluginOptions = {
 export default class HotEmitPlugin {
   public compilation: any
   public compiler: any
+  public initialized = false
 
   constructor(public inputFilename: string, public options: HotEmitPluginOptions) {
     this.options = options
@@ -21,13 +23,10 @@ export default class HotEmitPlugin {
   }
 
   async emitModule() {
-    if (!this.compilation || !this.options.onModule) {
-      return
-    }
     const compilation = this.compilation as any
 
     let oldModule
-    for (const mod of compilation.modules) {
+    for (const mod of compilation?.modules || []) {
       if (mod.resource === this.inputFilename) {
         oldModule = mod
         break
@@ -46,6 +45,17 @@ export default class HotEmitPlugin {
     return compilation.addModule(newModule)
   }
 
+  async init() {
+    if (this.initialized) {
+      return
+    }
+    this.initialized = true
+    if (this.inputFilename) {
+      fs.ensureFileSync(this.inputFilename)
+    }
+    await this.emitModule()
+  }
+
   apply(compiler) {
     this.compiler = compiler
     compiler.hooks.watchRun.tapPromise(NAME, async (compiler) => {
@@ -55,13 +65,11 @@ export default class HotEmitPlugin {
       this.options.onWatchClose && this.options.onWatchClose(compiler, this)
     })
 
+    compiler.hooks.initialize.tap(NAME, async () => {})
+
     compiler.hooks.thisCompilation.tap(NAME, (compilation) => {
-      compilation.hooks.buildModule.tap(NAME, async (module) => {
-        if (module.resource === this.inputFilename) {
-          this.compilation = compilation
-          await this.emitModule()
-        }
-      })
+      this.compilation = compilation
+      this.init()
     })
   }
 }

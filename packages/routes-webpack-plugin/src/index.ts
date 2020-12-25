@@ -4,6 +4,7 @@
  */
 import { FSWatcher, watch } from 'chokidar'
 import globby from 'globby'
+import * as fs from 'fs-extra'
 import { promisify } from 'util'
 
 import HotEmitPlugin from './HotEmitPlugin'
@@ -12,8 +13,7 @@ type Options = {
   inputFilename: string
   dirPatterns: string[]
   watchPatterns: string[]
-  loaderPath?: string
-  loaderOptions?: any
+  toSourceString?: (data: any) => Promise<string> | string
   globbyOptions?: Parameters<typeof globby>[1]
   onTransformData?: (info: any) => Promise<any> | any
 }
@@ -25,8 +25,7 @@ export default class WatchDirsHotEmitPlugin extends HotEmitPlugin {
     inputFilename,
     globbyOptions,
     onTransformData,
-    loaderPath,
-    loaderOptions,
+    toSourceString = (data) => `module.exports = ${JSON.stringify(data)}`,
     dirPatterns,
     watchPatterns
   }: Options) {
@@ -34,6 +33,7 @@ export default class WatchDirsHotEmitPlugin extends HotEmitPlugin {
       const { options } = (this.compilation || {}) as any
       const data = await globby(dirPatterns, {
         cwd: options?.context,
+        absolute: true,
         ...globbyOptions
       })
       if (onTransformData) {
@@ -55,13 +55,14 @@ export default class WatchDirsHotEmitPlugin extends HotEmitPlugin {
         })
 
         const handleDataUpdate = async (_changedFilename) => {
+          // console.log(_changedFilename)
           await handleData()
           await this.emitModule()
-          if (this.compilation && this.compilation.inputFileSystem && this.compilation.inputFileSystem.fileSystem) {
-            const fs = this.compilation.inputFileSystem.fileSystem
-            const stat = await promisify(fs.stat.bind(fs))(this.inputFilename)
-            await promisify(fs.utimes.bind(fs))(this.inputFilename, stat.atime, Date.now())
-          }
+          // if (this.compilation && this.compilation.inputFileSystem && this.compilation.inputFileSystem.fileSystem) {
+          //   const fs = this.compilation.inputFileSystem.fileSystem
+          //   const stat = await promisify(fs.stat.bind(fs))(this.inputFilename)
+          //   await promisify(fs.utimes.bind(fs))(this.inputFilename, stat.atime, Date.now())
+          // }
         }
         this.watcher.on('add', handleDataUpdate)
         this.watcher.on('unlink', handleDataUpdate)
@@ -71,29 +72,13 @@ export default class WatchDirsHotEmitPlugin extends HotEmitPlugin {
         this.watcher = null
       },
       onModule: async (module) => {
-        if (!module) {
-          return
-        }
         if (!this.data) {
           await handleData()
         }
-        const ident = loaderPath || __dirname + '/loader'
-        const loader = module.loaders.find((load) => load.ident === ident)
-        if (loader) {
-          loader.options.data = this.data
-          return module
-        }
 
-        module.loaders.push({
-          loader: ident,
-          options: {
-            ...loaderOptions,
-            data: this.data
-          },
-          ident: ident
-        })
-
-        return module
+        const sourceString = await toSourceString(this.data)
+        console.log('sourceString', sourceString)
+        await fs.writeFile(this.inputFilename, sourceString, 'utf8')
       }
     })
   }

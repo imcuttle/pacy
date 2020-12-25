@@ -17,8 +17,37 @@ yarn add @pacy/routes-webpack-plugin
 
 ## Usage
 
+- webpack config
+
 ```javascript
-import routesWebpackPlugin from '@pacy/routes-webpack-plugin'
+import * as nps from 'path'
+import RoutesWebpackPlugin from '@pacy/routes-webpack-plugin'
+
+module.exports = {
+  plugins: [
+    new RoutesWebpackPlugin({
+      // 用来占位的文件
+      inputFilename: '/path/to/routes-placeholder',
+      // 被解析生成目录结构树的文件目录
+      dirPatterns: ['/path/to/src/pages'],
+      // 被观察的文件目录
+      watchPatterns: ['/path/to/src/pages'],
+      // 写成什么样子
+      toSourceString: async (data) => {
+        return `
+module.exports = [
+  ${data.map(
+    (filename) => `{
+  name: ${JSON.stringify(nps.relative(nps.dirname('/path/to/routes-placeholder'), filename))},
+  source: () => import(${JSON.stringify(filename)}),
+}`
+  )}
+];
+`
+      }
+    })
+  ]
+}
 ```
 
 ## Contributing
