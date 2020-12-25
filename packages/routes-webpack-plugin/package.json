@@ -26,8 +26,7 @@
   "dependencies": {
     "chokidar": "^3.4.3",
     "fs-extra": "^9.0.1",
-    "globby": "^11.0.1",
-    "loader-utils": "^2.0.0"
+    "globby": "^11.0.1"
   },
   "devDependencies": {
     "html-webpack-plugin": "^4.5.0",
