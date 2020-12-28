@@ -4,7 +4,7 @@ import * as nps from 'path'
 import { NormalizedPacyCoreConfig } from './normalizeConfig'
 import toArray from './toArray'
 
-export default async function resolvePageRoutes(includes: NormalizedPacyCoreConfig['includes']) {
+export default async function resolvePageRoutes(includes: any) {
   const routes = {}
 
   const promList = Object.keys(includes).map(async (name) => {

@@ -16,12 +16,12 @@ exports.builder = (yargs) => {
     //   describe: "Optional package directory globs to match",
     //   type: "array",
     // })
-    .options({})
+    // .options({})
     .example('$0 start')
 
   return yargs
 }
 
-exports.handler = function handler(argv) {
-  return require('..').default(argv)
+exports.handler = function handler(argv = {}) {
+  return require('..').default({})
 }

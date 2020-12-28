@@ -22,8 +22,7 @@ export default class CompileRunner {
     // @ts-ignore
     getWebpackChain: new AsyncSeriesWaterfallHook(['chain', 'webpack']),
     // @ts-ignore
-    getWebpackConfig: new AsyncSeriesWaterfallHook(['webpackConfig', 'webpack']),
-    getConfig: new AsyncSeriesWaterfallHook(['config'])
+    getWebpackConfig: new AsyncSeriesWaterfallHook(['webpackConfig', 'webpack'])
   }
 
   public webpackCompiler: Compiler

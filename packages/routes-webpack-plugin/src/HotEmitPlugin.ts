@@ -1,13 +1,15 @@
 import { promisify } from 'util'
-const NAME = 'HotEmitPlugin'
 import * as fs from 'fs-extra'
+import { Compiler, MultiCompiler } from 'webpack'
+
+const NAME = 'HotEmitPlugin'
 
 type SyncOrAsync<T> = T | Promise<T>
 
 export type HotEmitPluginOptions = {
   onModule: (oldAsset?: any) => SyncOrAsync<any>
-  onWatchRun?: (compiler: any, pluginApi: HotEmitPlugin) => SyncOrAsync<void>
-  onWatchClose?: (compiler: any, pluginApi: HotEmitPlugin) => void
+  onWatchRun?: (compiler: Compiler | MultiCompiler, pluginApi: HotEmitPlugin) => SyncOrAsync<void>
+  onWatchClose?: (compiler: Compiler | MultiCompiler, pluginApi: HotEmitPlugin) => void
 }
 
 export default class HotEmitPlugin {

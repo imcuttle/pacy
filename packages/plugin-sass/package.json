@@ -1,0 +1,31 @@
+{
+  "name": "@pacy/plugin-sass",
+  "version": "0.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "imcuttle <moyuyc95@gmail.com>",
+  "description": "sass",
+  "main": "src",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "../../scripts/run test",
+    "packlimit": "../../scripts/run packlimit",
+    "version": "npm test"
+  },
+  "dependencies": {},
+  "keywords": [
+    "imcuttle",
+    "plugin-sass",
+    "余聪",
+    "pacy",
+    "pacy"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imcuttle/pacy.git",
+    "directory": "packages/plugin-sass"
+  }
+}

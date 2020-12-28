@@ -5,7 +5,7 @@
 import { FSWatcher, watch } from 'chokidar'
 import globby from 'globby'
 import * as fs from 'fs-extra'
-import { promisify } from 'util'
+import { getHooks } from './hooks'
 
 import HotEmitPlugin from './HotEmitPlugin'
 
@@ -18,7 +18,11 @@ type Options = {
   onTransformData?: (info: any) => Promise<any> | any
 }
 
+export { getHooks }
+
 export default class WatchDirsHotEmitPlugin extends HotEmitPlugin {
+  static getHooks = getHooks
+
   public watcher: FSWatcher
   public data: any
   constructor({
@@ -31,11 +35,13 @@ export default class WatchDirsHotEmitPlugin extends HotEmitPlugin {
   }: Options) {
     const _generateData = async () => {
       const { options } = (this.compilation || {}) as any
-      const data = await globby(dirPatterns, {
+      let data = await globby(dirPatterns, {
         cwd: options?.context,
         absolute: true,
         ...globbyOptions
       })
+      // @ts-ignore
+      data = await getHooks(this.compiler).transformData.promise(data, this)
       if (onTransformData) {
         return await onTransformData(data)
       }
@@ -48,26 +54,31 @@ export default class WatchDirsHotEmitPlugin extends HotEmitPlugin {
     }
 
     super(inputFilename, {
-      onWatchRun: () => {
+      onWatchRun: async (compiler) => {
+        // @ts-ignore
+        if (false === (await getHooks(compiler).shouldWatch.promise(true, this))) {
+          return
+        }
         this.watcher = watch(watchPatterns, {
           persistent: true,
           ignoreInitial: true
         })
 
         const handleDataUpdate = async (_changedFilename) => {
-          // console.log(_changedFilename)
           await handleData()
           await this.emitModule()
-          // if (this.compilation && this.compilation.inputFileSystem && this.compilation.inputFileSystem.fileSystem) {
-          //   const fs = this.compilation.inputFileSystem.fileSystem
-          //   const stat = await promisify(fs.stat.bind(fs))(this.inputFilename)
-          //   await promisify(fs.utimes.bind(fs))(this.inputFilename, stat.atime, Date.now())
-          // }
         }
         this.watcher.on('add', handleDataUpdate)
         this.watcher.on('unlink', handleDataUpdate)
+        // @ts-ignore
+        await getHooks(compiler).onWatcher.promise(this.watcher, this)
       },
-      onWatchClose: () => {
+      onWatchClose: (compiler) => {
+        if (!this.watcher) {
+          return
+        }
+        // @ts-ignore
+        getHooks(compiler).onWatcherClose.call(this.watcher, this)
         this.watcher.close()
         this.watcher = null
       },
@@ -77,7 +88,6 @@ export default class WatchDirsHotEmitPlugin extends HotEmitPlugin {
         }
 
         const sourceString = await toSourceString(this.data)
-        console.log('sourceString', sourceString)
         await fs.writeFile(this.inputFilename, sourceString, 'utf8')
       }
     })

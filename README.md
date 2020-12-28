@@ -12,6 +12,7 @@
 
 - [@pacy/cli](packages/cli) - cli
 - [@pacy/core](packages/core) - core
+- [@pacy/plugin-sass](packages/plugin-sass) - sass
 - [@pacy/routes-webpack-plugin](packages/routes-webpack-plugin) - routes webpack plugin
 - [@pacy/start](packages/start) - start command
 - [@pacy/webpack-config](packages/webpack-config) - webpack config

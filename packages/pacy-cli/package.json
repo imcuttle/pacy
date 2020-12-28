@@ -4,27 +4,14 @@
   "publishConfig": {
     "access": "public"
   },
+  "bin": "bin.js",
   "author": "余聪 <yucong06@meituan.com>",
   "description": "cli use",
-  "main": "lib",
-  "types": "types",
-  "module": "es",
-  "files": [
-    "lib",
-    "es",
-    "types"
-  ],
-  "scripts": {
-    "test": "../../scripts/run test",
-    "build": "../../scripts/run build",
-    "packlimit": "../../scripts/run packlimit",
-    "dev": "npm run build -- --watch",
-    "prepublishOnly": "npm run build",
-    "version": "npm test"
-  },
+  "main": "src",
+  "scripts": {},
   "dependencies": {
-    "@pacy/cli": "^0.0.0",
-    "@pacy/core": "^0.0.0",
+    "@pacy/cli": "^0.0.2",
+    "@pacy/core": "^0.0.2",
     "@pacy/start": "^0.0.2"
   },
   "keywords": [

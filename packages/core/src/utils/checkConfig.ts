@@ -21,6 +21,7 @@ export type PacyCoreConfig = {
 }
 
 export default function checkConfig(config: PacyCoreConfig) {
+  // console.log('config', config)
   return ow(
     config,
     'PacyConfig',
@@ -34,12 +35,12 @@ export default function checkConfig(config: PacyCoreConfig) {
         )
       ),
       pacyrc: ow.optional.boolean,
-      baseDir: ow.optional.string,
-      includes: ow.optional.any(
-        ow.string,
-        ow.array.ofType(ow.string),
-        ow.object.valuesOfType(ow.any(ow.string, ow.array.ofType(ow.string)))
-      )
+      baseDir: ow.optional.string
+      // includes: ow.optional.any(
+      //   ow.string,
+      //   ow.array.ofType(ow.string),
+      //   ow.object.valuesOfType(ow.any(ow.string, ow.array.ofType(ow.string)))
+      // )
     })
   )
 }
