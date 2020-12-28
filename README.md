@@ -8,19 +8,14 @@
 
 > Smart dev pattern with webpack
 
-## Installation
+## Packages
 
-```bash
-npm install pacy
-# or use yarn
-yarn add pacy
-```
-
-## Usage
-
-```javascript
-import pacy from 'pacy'
-```
+- [@pacy/cli](packages/cli) - cli
+- [@pacy/core](packages/core) - core
+- [@pacy/routes-webpack-plugin](packages/routes-webpack-plugin) - routes webpack plugin
+- [@pacy/start](packages/start) - start command
+- [@pacy/webpack-config](packages/webpack-config) - webpack config
+- [pacy-cli](packages/pacy-cli) - cli use
 
 ## Contributing
 
