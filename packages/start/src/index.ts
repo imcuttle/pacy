@@ -3,9 +3,9 @@
  * @author 余聪
  */
 import PacyCore, { PacyCoreConfig } from '@pacy/core'
-import * as express from 'express'
+import express from 'express'
 import getPort from 'get-port'
-import * as middleware from 'webpack-dev-middleware'
+import middleware from 'webpack-dev-middleware'
 
 type StartPacyCoreConfig = PacyCoreConfig & {
   port?: number
