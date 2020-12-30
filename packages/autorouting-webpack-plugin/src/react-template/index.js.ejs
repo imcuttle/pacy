@@ -1,0 +1,14 @@
+import runSeries from <%=source('lib', 'run-series')%>;
+
+var tasks = [<% for (const dep of dependencies) {%>
+    require(<%=JSON.stringify(dep.source)%>)(dep.options || {}),
+<% } %>];
+
+runSeries(tasks).then(function (flag) {
+    if (flag !== false) {
+        require(<%=source('entry')%>);
+    }
+}).catch(function (error) {
+    throw error;
+})
+

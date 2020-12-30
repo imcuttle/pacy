@@ -1,0 +1,15 @@
+<% for (const importSource of imports) {%>
+import <%=JSON.stringify(importSource)%>;
+<% } %>
+
+import routes from <%=source('routes')%>
+import ReactRouter from <%=source('lib', 'react-router')%>
+import * as ReactDOM from 'react-dom'
+import * as React from 'react'
+
+var dom = document.querySelector(<%=JSON.stringify(reactElementSelector)%>);
+var render = dom.innerHTML ? ReactDOM.hydrate : ReactDOM.render;
+render(
+    React.createElement(ReactRouter, { routes }),
+    dom
+);

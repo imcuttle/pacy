@@ -10,10 +10,14 @@ import { getHooks } from './hooks'
 
 import HotEmitPlugin from './HotEmitPlugin'
 
-type Options = {
+export type Options = {
   inputFilename: string
   dirPatterns: string[]
   watchPatterns: string[]
+  generateData?: (
+    api: WatchDirsHotEmitPlugin,
+    arg: ConstructorParameters<typeof WatchDirsHotEmitPlugin>[0]
+  ) => Promise<any> | any
   toSourceString?: (data: any) => Promise<string> | string
   globbyOptions?: Parameters<typeof globby>[1]
   onTransformData?: (info: any) => Promise<any> | any
@@ -30,17 +34,24 @@ export default class WatchDirsHotEmitPlugin extends HotEmitPlugin {
     inputFilename,
     globbyOptions,
     onTransformData,
+    generateData,
     toSourceString = (data) => `module.exports = ${JSON.stringify(data)}`,
     dirPatterns,
     watchPatterns
   }: Options) {
     const _generateData = async () => {
-      const { options } = (this.compilation || {}) as any
-      let data = await globby(dirPatterns, {
-        cwd: options?.context,
-        absolute: true,
-        ...globbyOptions
-      })
+      let data: any
+      if (generateData) {
+        data = await generateData(this, arguments[0])
+      } else {
+        const { options } = (this.compilation || {}) as any
+        data = await globby(dirPatterns, {
+          cwd: options?.context,
+          absolute: true,
+          ...globbyOptions
+        })
+      }
+
       // @ts-ignore
       data = await getHooks(this.compiler).transformData.promise(data, this)
       if (onTransformData) {

@@ -14,15 +14,27 @@
     "example": "npx webpack serve"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.10",
+    "@babel/preset-react": "^7.12.10",
+    "babel-loader": "^8.2.2",
     "html-webpack-plugin": "^4.5.0",
     "memory-fs": "^0.5.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
     "webpack": "^5.11.0",
     "webpack-cli": "^4.2.0",
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "react-webpack-lazyloader": "^1.0.5",
+    "@loadable/component": "^5.14.1",
+    "@loadable/babel-plugin": "^5.13.2",
     "@pacy/routes-webpack-plugin": "^0.0.2",
     "fs-extra": "^9.0.1",
+    "js-yaml": "^3.14.1",
     "lodash.template": "^4.5.0",
     "tapable": "^2.2.0"
   },
