@@ -5,7 +5,7 @@
 import yargs from 'yargs/yargs'
 import ora from 'ora'
 
-const spinner = ora('@pacy/cli').start()
+const spinner = ora('@pacy/cli')
 
 export default function cli(argv?: any[], cwd?: string) {
   const cli = yargs(argv, cwd)
@@ -28,7 +28,7 @@ export default function cli(argv?: any[], cwd?: string) {
             spinner.fail(`Unknown command "${cli.parsed.argv._[0]}"`)
           }
 
-          spinner.fail(actual.message)
+          spinner.fail(String(actual.stack))
         }
 
         // exit non-zero so the CLI can be usefully chained

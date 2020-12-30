@@ -1,0 +1,39 @@
+{
+  "name": "@pacy/autorouting-webpack-plugin",
+  "version": "0.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "imcuttle <moyuyc95@gmail.com>",
+  "description": "auto routing",
+  "main": "src",
+  "scripts": {
+    "test": "../../scripts/run test",
+    "packlimit": "../../scripts/run packlimit",
+    "version": "npm test",
+    "example": "npx webpack serve"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^4.5.0",
+    "memory-fs": "^0.5.0",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "@pacy/routes-webpack-plugin": "^0.0.2",
+    "tapable": "^2.2.0"
+  },
+  "keywords": [
+    "imcuttle",
+    "autorouting-webpack-plugin",
+    "余聪",
+    "pacy",
+    "pacy"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imcuttle/pacy.git",
+    "directory": "packages/autorouting-webpack-plugin"
+  }
+}

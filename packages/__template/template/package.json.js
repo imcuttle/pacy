@@ -18,7 +18,7 @@ module.exports = ({ packagePrefix, name, description, scriptBin, _, useTs }) => 
     },
     author: `${_.git.name} <${_.git.email}>`,
     description,
-    main: useTs ? 'src' : 'lib',
+    main: !useTs ? 'src' : 'lib',
     types: 'types',
     module: 'es',
     files: useTs ? ['lib', 'es', 'types'] : ['src'],
@@ -37,7 +37,6 @@ module.exports = ({ packagePrefix, name, description, scriptBin, _, useTs }) => 
     delete scripts.prepublishOnly
     delete scripts.dev
 
-    delete pkg.main
     delete pkg.types
     delete pkg.module
   }

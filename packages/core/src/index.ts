@@ -37,7 +37,7 @@ export const rcExplorer = cosmiconfig('pacy')
 class PacyCore {
   public hooks = {
     getConfig: new AsyncSeriesWaterfallHook(['config']),
-    compileRunner: new AsyncSeriesBailHook(['compileRunner'])
+    compileRunner: new AsyncParallelHook(['compileRunner'])
   }
 
   public compileRunner: CompileRunner = new CompileRunner()

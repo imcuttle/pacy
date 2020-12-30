@@ -5,6 +5,7 @@
 import PacyCore, { PacyCoreConfig } from '@pacy/core'
 import express from 'express'
 import getPort from 'get-port'
+import webpack from 'webpack'
 import middleware from 'webpack-dev-middleware'
 
 type StartPacyCoreConfig = PacyCoreConfig & {
@@ -17,12 +18,9 @@ export default async function start({ port = 6060, ...config }: StartPacyCoreCon
   const webpackCompiler = await compileRunner.prepare()
 
   const app = express()
-  app.use(
-    middleware(webpackCompiler, {
-      // webpack-dev-middleware options
-    })
-  )
+  const instance = middleware(webpackCompiler, {})
+  app.use(instance)
 
   port = await getPort({ port: getPort.makeRange(port, 65535) })
-  app.listen(port, () => console.log('Example app listening on port 3000!'))
+  app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 }

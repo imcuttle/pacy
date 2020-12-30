@@ -1,0 +1,31 @@
+{
+  "name": "@pacy/plugin-routing",
+  "version": "0.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "imcuttle <moyuyc95@gmail.com>",
+  "description": "auto routing",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "../../scripts/run test",
+    "packlimit": "../../scripts/run packlimit",
+    "version": "npm test"
+  },
+  "dependencies": {},
+  "keywords": [
+    "imcuttle",
+    "plugin-routing",
+    "余聪",
+    "pacy",
+    "pacy"
+  ],
+  "main": "src",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imcuttle/pacy.git",
+    "directory": "packages/plugin-routing"
+  }
+}

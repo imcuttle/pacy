@@ -10,8 +10,10 @@
 
 ## Packages
 
+- [@pacy/autorouting-webpack-plugin](packages/autorouting-webpack-plugin) - auto routing
 - [@pacy/cli](packages/cli) - cli
 - [@pacy/core](packages/core) - core
+- [@pacy/plugin-routing](packages/plugin-routing) - auto routing
 - [@pacy/plugin-sass](packages/plugin-sass) - sass
 - [@pacy/routes-webpack-plugin](packages/routes-webpack-plugin) - routes webpack plugin
 - [@pacy/start](packages/start) - start command

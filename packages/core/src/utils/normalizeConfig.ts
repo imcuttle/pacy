@@ -16,6 +16,7 @@ export default function normalizeConfig(config: PacyCoreConfig, baseDir?: string
   config = cloneDeep(
     Object.assign(
       {
+        pacyrc: true
         // includes: {
         //   [__SINGLE_ENTRY_KEY]: 'src/pages'
         // }
