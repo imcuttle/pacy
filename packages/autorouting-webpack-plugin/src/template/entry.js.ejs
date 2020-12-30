@@ -1,0 +1,8 @@
+<% for (const importSource of imports) {%>
+import <%=JSON.stringify(importSource)%>;
+<% } %>
+
+<% for (const rawEntry of source('rawEntries')) {%>
+import <%=JSON.stringify(rawEntry)%>;
+<% } %>
+

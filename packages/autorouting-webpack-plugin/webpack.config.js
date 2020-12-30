@@ -3,6 +3,9 @@ const AutoRoutingPlugin = require('.')
 
 const config = {
   context: __dirname + '/example',
+  entry: './src/',
+  mode: 'development',
+  devtool: 'cheap-source-map',
   plugins: []
 }
 

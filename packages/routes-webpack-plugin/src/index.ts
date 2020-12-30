@@ -5,6 +5,7 @@
 import { FSWatcher, watch } from 'chokidar'
 import globby from 'globby'
 import * as fs from 'fs-extra'
+import debounce from 'lodash.debounce'
 import { getHooks } from './hooks'
 
 import HotEmitPlugin from './HotEmitPlugin'
@@ -59,15 +60,17 @@ export default class WatchDirsHotEmitPlugin extends HotEmitPlugin {
         if (false === (await getHooks(compiler).shouldWatch.promise(true, this))) {
           return
         }
+
         this.watcher = watch(watchPatterns, {
           persistent: true,
           ignoreInitial: true
         })
 
-        const handleDataUpdate = async (_changedFilename) => {
+        const handleDataUpdate = debounce(async (_changedFilename) => {
+          console.log('_changedFilename', _changedFilename)
           await handleData()
           await this.emitModule()
-        }
+        }, 120)
         this.watcher.on('add', handleDataUpdate)
         this.watcher.on('unlink', handleDataUpdate)
         // @ts-ignore

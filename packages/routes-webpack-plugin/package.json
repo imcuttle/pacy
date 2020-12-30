@@ -27,6 +27,7 @@
     "chokidar": "^3.4.3",
     "fs-extra": "^9.0.1",
     "globby": "^11.0.1",
+    "lodash.debounce": "^4.0.8",
     "tapable": "^2.2.0"
   },
   "devDependencies": {
