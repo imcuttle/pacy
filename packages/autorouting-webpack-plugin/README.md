@@ -5,7 +5,8 @@
 [![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://prettier.io/)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat-square)](https://conventionalcommits.org)
 
-> auto routing
+> [WIP] Webpack 插件：类 dumi 自动根据文件结构，生成路由规则  
+> 具有热更新，Code Splitting，meta 注入
 
 ## Installation
 
