@@ -6,7 +6,7 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat-square)](https://conventionalcommits.org)
 
 > [WIP] Webpack 插件：类 dumi 自动根据文件结构，生成路由规则  
-> 具有热更新，Code Splitting，meta 注入
+> 具有热更新，Code Splitting，meta 注入 等特性
 
 可以在该目录下 npm run example 预览效果
 
