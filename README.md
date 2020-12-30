@@ -1,4 +1,4 @@
-# pacy
+# \[WIP] pacy
 
 [![Build status](https://img.shields.io/travis/余聪/pacy/master.svg?style=flat-square)](https://travis-ci.org/余聪/pacy)
 [![Test coverage](https://img.shields.io/codecov/c/github/余聪/pacy.svg?style=flat-square)](https://codecov.io/github/余聪/pacy?branch=master)
